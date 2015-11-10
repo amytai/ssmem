@@ -5,7 +5,7 @@ PROF = prof
 
 CC ?= gcc
 
-CFLAGS = -O3 -Wall
+CFLAGS = -O3 -Wall -fPIC
 LDFLAGS = -lm -lrt -lpthread -lssmem
 VER_FLAGS = -D_GNU_SOURCE
 
