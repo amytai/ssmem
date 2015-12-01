@@ -68,7 +68,7 @@
 /* help definitions */
 /* **************************************************************************************** */
 #define ALIGNED(N) __attribute__ ((aligned (N)))
-#define CACHE_LINE_SIZE 64
+#define CACHE_LINE_SIZE 128
 
 /* **************************************************************************************** */
 /* data structures used by ssmem */
