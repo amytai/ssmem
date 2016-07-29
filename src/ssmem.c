@@ -99,7 +99,7 @@ ssmem_alloc_init_fs_size(ssmem_allocator_t* a, size_t size, size_t free_set_size
 
   if (id == 0)
     {
-      printf("[ALLOC] initializing allocator with fs size: %zu objects\n", free_set_size);
+      //printf("[ALLOC] initializing allocator with fs size: %zu objects\n", free_set_size);
     }
 
 #if SSMEM_TRANSPARENT_HUGE_PAGES
