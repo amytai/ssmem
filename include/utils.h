@@ -31,6 +31,7 @@
 #ifndef _UTILS_H_INCLUDED_
 #define _UTILS_H_INCLUDED_
 
+#include <sched.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
@@ -129,7 +130,7 @@ extern "C" {
     return (double)t.tv_sec + ((double)t.tv_usec)/1000000.0;
   }
 
-  static inline void set_cpu(int cpu) {
+  /*static inline void set_cpu(int cpu) {
 #ifdef __sparc__
     processor_bind(P_LWPID,P_MYID, cpu, NULL);
 #elif defined(__tile__)
@@ -141,15 +142,15 @@ extern "C" {
       tmc_task_die("tmc_cpus_set_my_cpu() failed."); 
     }    
 #else
-    cpu_set_t mask;
+    cpuset_t mask;
     CPU_ZERO(&mask);
     CPU_SET(cpu, &mask);
     pthread_t thread = pthread_self();
-    if (pthread_setaffinity_np(thread, sizeof(cpu_set_t), &mask) != 0) {
+    if (pthread_setaffinity_np(thread, sizeof(cpuset_t), &mask) != 0) {
       fprintf(stderr, "Error setting thread affinity\n");
     }
 #endif
-  }
+  }*/
 
 #if defined(__i386__)
   static inline ticks getticks(void) {
@@ -275,7 +276,7 @@ extern "C" {
 
   static inline unsigned long* seed_rand() {
     unsigned long* seeds;
-    seeds = (unsigned long*) memalign(64, 64);
+    int ret = posix_memalign(&seeds, 64, 64);
     seeds[0] = getticks() % 123456789;
     seeds[1] = getticks() % 362436069;
     seeds[2] = getticks() % 521288629;

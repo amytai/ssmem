@@ -64,7 +64,7 @@ ssmem_gc_thread_init(ssmem_allocator_t* a, int id)
   a->ts = (ssmem_ts_t*) ssmem_ts_local;
   if (a->ts == NULL)
     {
-      a->ts = (ssmem_ts_t*) memalign(CACHE_LINE_SIZE, sizeof(ssmem_ts_t));
+      int junk = posix_memalign(&a->ts, CACHE_LINE_SIZE, sizeof(ssmem_ts_t));
       assert (a->ts != NULL);
       ssmem_ts_local = a->ts;
 
@@ -106,7 +106,7 @@ ssmem_alloc_init_fs_size(ssmem_allocator_t* a, size_t size, size_t free_set_size
   int ret = posix_memalign(&a->mem, CACHE_LINE_SIZE, size);
   assert(ret == 0);
 #else
-  a->mem = (void*) memalign(CACHE_LINE_SIZE, size);
+  int ret = posix_memalign(&a->mem, CACHE_LINE_SIZE, size);
 #endif
   assert(a->mem != NULL);
 #if SSMEM_ZERO_MEMORY == 1
@@ -185,7 +185,8 @@ ssmem_free_set_t*
 ssmem_free_set_new(size_t size, ssmem_free_set_t* next)
 {
   /* allocate both the ssmem_free_set_t and the free_set with one call */
-  ssmem_free_set_t* fs = (ssmem_free_set_t*) memalign(CACHE_LINE_SIZE, sizeof(ssmem_free_set_t) + (size * sizeof(uintptr_t)));
+  ssmem_free_set_t *fs;
+  int ret = (ssmem_free_set_t*) posix_memalign(&fs, CACHE_LINE_SIZE, sizeof(ssmem_free_set_t) + (size * sizeof(uintptr_t)));
   assert(fs != NULL);
 
   fs->size = size;
@@ -463,7 +464,7 @@ ssmem_alloc(ssmem_allocator_t* a, size_t size)
 	  int ret = posix_memalign(&a->mem, CACHE_LINE_SIZE, a->mem_size);
 	  assert(ret == 0);
 #else
-	  a->mem = (void*) memalign(CACHE_LINE_SIZE, a->mem_size);
+	  int ret = posix_memalign(&a->mem, CACHE_LINE_SIZE, a->mem_size);
 #endif
 	  assert(a->mem != NULL);
 #if SSMEM_ZERO_MEMORY == 1

@@ -3,11 +3,11 @@ INCLUDE = include
 BENCH = benchmarks
 PROF = prof
 
-CC ?= gcc
+CC = x86_64-rumprun-netbsd-gcc
 
-CFLAGS = -O3 -Wall -fPIC
-LDFLAGS = -lm -lrt -lpthread -lssmem
-VER_FLAGS = -D_GNU_SOURCE
+CFLAGS = -O3 -Wall -fPIC -L/home/amytai/bespin/target/x86_64-bespin-none/release/build/rumpkernel-63e370a9b18c8151/out/./rumprun/rumprun-x86_64/../../obj-amd64-bespin/lib/libunwind/ -I. -D_REENTRANT -DOS_NETBSD -DLEVELDB_PLATFORM_POSIX -O2 -DNDEBUG
+LDFLAGS = -lm -lpthread -lssmem
+#VER_FLAGS = -D_GNU_SOURCE
 
 MEASUREMENTS = 0
 

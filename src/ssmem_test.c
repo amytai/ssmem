@@ -194,7 +194,8 @@ test(void* thread)
 
   /* printf("[%2d] starting:: %d allocs\n", ID, num_allocs); */
 
-  ssmem_allocator_t* alloc = (ssmem_allocator_t*) memalign(CACHE_LINE_SIZE, 
+  ssmem_allocator_t* alloc;
+  int junk = posix_memalign(&alloc, CACHE_LINE_SIZE, 
 							   num_allocs * sizeof(ssmem_allocator_t));
   assert(alloc != NULL);
 
